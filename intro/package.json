@@ -1,0 +1,23 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "Basic nodeJs guide",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakeshgzp/nodeJs.git"
+  },
+  "author": "Rakesh Prasad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rakeshgzp/nodeJs/issues"
+  },
+  "homepage": "https://github.com/rakeshgzp/nodeJs#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
