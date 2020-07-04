@@ -23,6 +23,9 @@ main{
     padding: 0;
     display: flex;
 }
+.centered{
+    text-align: center;
+}
 .main-header__item {
     margin: 0 1rem;
     padding: 0;
