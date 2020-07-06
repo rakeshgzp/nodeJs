@@ -14,3 +14,5 @@ const sequelize = new Sequelize('node_complete','root','easy', {
     dialect: 'mysql',
     host: 'localhost'
 });
+ 
+module.exports = sequelize;
