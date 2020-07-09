@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const { request } = require('express');
+const product = require('../models/product');
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product',
     {pageTitle: 'Add Product',
@@ -13,9 +14,15 @@ exports.postAddProduct = (req,res,next)=>{
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    const product = new Product(title, price, description, imageUrl, null, req.user._id);
+    // const product = new Product(title, price, description, imageUrl, null, req.user._id);
 
-
+    const product = new Product({
+        title: title,
+        price: price,
+        description: description, 
+        imageUrl: imageUrl,
+        userId: req.user._id          // or use req.user
+    });
     // const product = new Product(null, title, imageUrl, description, price);
     // product.save()
     // .then(() => {
@@ -96,9 +103,22 @@ exports.postEditProduct = (req, res, next) => {
     // const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedDesc, updatedPrice);
     // updatedProduct.save();
 
-    Product.findById(prodId)
-        const product = new Product(updatedTitle, updatedPrice,  updatedDesc, updatedImageUrl, prodId);
-        product.save().then(result => {
+    // Product.findById(prodId)
+    //     const product = new Product(updatedTitle, updatedPrice,  updatedDesc, updatedImageUrl, prodId);
+    //     product.save().then(result => {
+    //         console.log("Updated Product")
+    //         res.redirect('/admin/products');
+    //     })
+    //     .catch(err => console.log(err))
+
+    Product.findById(prodId).then(product => {
+        product.title = updatedTitle;
+        product.price = updatedPrice;
+        product.description = updatedDesc;
+        product.imageUrl = updatedImageUrl;
+        return product.save()
+    })
+    .then(result => {
             console.log("Updated Product")
             res.redirect('/admin/products');
         })
@@ -117,7 +137,9 @@ exports.getProducts = (req, res, next)=>{
     //       })
     //     .catch(err => console.log(err))
 
-    Product.fetchAll()
+    Product.find()
+        // .select('title proce -_id')    //choose fields u want 
+        // .populate('userId', 'name')            // Adds additional info using relations and selected name only out of it
         .then((products) => {
             res.render('admin/products',
             { prods: products,
@@ -129,7 +151,7 @@ exports.getProducts = (req, res, next)=>{
 }
 exports.deleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    Product.deleteById(prodId)    
+    Product.findByIdAndRemove(prodId)    
         .then(() => {
             res.redirect('/admin/products');           
         })

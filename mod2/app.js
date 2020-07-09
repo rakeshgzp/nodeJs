@@ -7,7 +7,8 @@ const app = express();
 // const sequelize = require('./util/database');
 const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database').mongoConnect;
+// const mongoConnect = require('./util/database').mongoConnect;
+const mongoose = require('mongoose');
 const Product = require('./models/product');
 const User = require('./models/user'); 
 // const Cart = require('./models/cart');
@@ -21,10 +22,10 @@ app.set('views','views');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {                           //adds user for every incoming request
-    User.findById('5f05cd60b53348a3f83289c3')
+    User.findById('5f06e6399982582ba2dc568e')
         .then(user => {
             // console.log("------>"+user.id+"<-------");
-            req.user = new User(user.name, user.email, user.cart, user._id);
+            req.user = user;
             next();
         })
         .catch(err => console.log(err))
@@ -33,9 +34,26 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
-mongoConnect(() => {
-    app.listen(3000);
-})
+mongoose.connect("mongodb+srv://user1:NlqAN1JAwZzfLFkP@cluster0.ekyqa.mongodb.net/shop?retryWrites=true&w=majority")
+    .then(result => {
+        User.findOne().then(user => {
+            if(!user){
+                const user = new User({
+                    name: 'Rakesh',
+                    email: 'rakesh@gmail.com',
+                    cart: { items: []}
+                });
+                user.save();       
+            }
+        })
+        app.listen(3000);
+    }).catch(err => console.log(err));
+
+
+
+// mongoConnect(() => {
+//     app.listen(3000);
+// })
 
 // Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
 // User.hasMany(Product)
