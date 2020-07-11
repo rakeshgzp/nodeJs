@@ -15,7 +15,9 @@ main{
 .main-header__nav {
     height: 100%;
     display: flex;
+    width: 100%;
     align-items: center;
+    justify-content: space-between;
 }
 .main-header__item-list{
     list-style: none;
