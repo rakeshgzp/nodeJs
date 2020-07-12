@@ -6,7 +6,6 @@ exports.getAddProduct = (req, res, next) => {
     {pageTitle: 'Add Product',
     path:'/admin/add-product',
     editing: false,
-    isAuthenticated: req.session.isLoggedIn
 });
 }
 
@@ -15,8 +14,7 @@ exports.postAddProduct = (req,res,next)=>{
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    // const product = new Product(title, price, description, imageUrl, null, req.user._id);
-
+ 
     const product = new Product({
         title: title,
         price: price,
@@ -24,29 +22,7 @@ exports.postAddProduct = (req,res,next)=>{
         imageUrl: imageUrl,
         userId: req.user._id          // or use req.user
     });
-    // const product = new Product(null, title, imageUrl, description, price);
-    // product.save()
-    // .then(() => {
-    //     res.redirect('/');
-    // })
-    // .catch(err => console.log(err));
-    // res.redirect('/');
-
-
-    // req.user
-    //     .createProduct({                          //Feature of sqeuelize as we have used Productbelongsto(Users)
-    //         title: title,
-    //         price: price,
-    //         description: description,
-    //         imageUrl: imageUrl
-    //     })
-    //     .then(result => {
-    //         console.log("Created Product");
-    //         res.redirect('/admin/products');
-    //     })
-    //     .catch((err) => console.log(err));
-
-
+ 
     product
         .save()
         .then(result => {
@@ -77,24 +53,10 @@ exports.getEditProduct = (req, res, next) => {
                 path:'/admin/edit-product',
                 editing: editMode,
                 product: product,
-                isAuthenticated: req.session.isLoggedIn
             });            
         })
         .catch(err => console.log(err))
 
-    // Product.findById(prodId, product => {
-    //     if (!product){
-    //         return res.redirect('/');
-    //     }
-    //     res.render('admin/edit-product',
-    //     {
-    //         pageTitle: 'Edit Product',
-    //         path:'/admin/edit-product',
-    //         editing: editMode,
-    //         product: product
-    //     });
-    // });
- 
 }
 exports.postEditProduct = (req, res, next) => {
     const prodId = req.body.productId;
@@ -102,17 +64,6 @@ exports.postEditProduct = (req, res, next) => {
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDesc = req.body.description;
-    // const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedDesc, updatedPrice);
-    // updatedProduct.save();
-
-    // Product.findById(prodId)
-    //     const product = new Product(updatedTitle, updatedPrice,  updatedDesc, updatedImageUrl, prodId);
-    //     product.save().then(result => {
-    //         console.log("Updated Product")
-    //         res.redirect('/admin/products');
-    //     })
-    //     .catch(err => console.log(err))
-
     Product.findById(prodId).then(product => {
         product.title = updatedTitle;
         product.price = updatedPrice;
@@ -128,26 +79,13 @@ exports.postEditProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next)=>{
-    // Product.findAll()
-    // req.user.getProducts()
-    //     .then((products) => {
-    //         res.render('admin/products',
-    //         { prods: products,
-    //         pageTitle: 'Admin Products',
-    //         path: "/admin/products",
-    //         });
-    //       })
-    //     .catch(err => console.log(err))
 
     Product.find()
-        // .select('title proce -_id')    //choose fields u want 
-        // .populate('userId', 'name')            // Adds additional info using relations and selected name only out of it
         .then((products) => {
             res.render('admin/products',
             { prods: products,
             pageTitle: 'Admin Products',
             path: "/admin/products",
-            isAuthenticated: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err));
