@@ -13,11 +13,14 @@ const MongoDBStrore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const User = require('./models/user'); 
-const MONGODB_URI = "mongodb+srv://user1:NlqAN1JAwZzfLFkP@cluster0.ekyqa.mongodb.net/shop";
+const dotenv = require('dotenv');
+dotenv.config();
+const MONGODB_URI = process.env.MONGODB_URI;    
 const store = new MongoDBStrore({
     uri: MONGODB_URI,
     collection: 'sessions'
 });
+
 const csrfProtection = csrf();
 app.set('view engine','ejs');
 app.set('views','views');
