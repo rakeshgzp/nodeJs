@@ -5,4 +5,17 @@
 </head>
 <body>
     <%- include('../includes/navigation.ejs') %>
+    <main>
+        <ul>
+            <% products.forEach(p => { %>
+                <li>
+                    <h1><%= p.productId.title %></h1>
+                    <h2>Quantity: <%= p.quantity %> </h2>
+                 </li>
+            <% }) %>
+        </ul>
+        <div class="centered">
+            <h2>Total: <%= totalSum %></h2>
+        </div>
+    </main>
     <%- include('../includes/end.ejs') %>
