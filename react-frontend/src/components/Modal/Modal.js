@@ -10,7 +10,6 @@ const modal = props =>
       <header className="modal__header">
         <h1>{props.title}</h1>
       </header>
-      <div className="modal__content">{props.children}</div>
       <div className="modal__actions">
         <Button design="danger" mode="flat" onClick={props.onCancelModal}>
           Cancel
@@ -24,6 +23,7 @@ const modal = props =>
           Accept
         </Button>
       </div>
+      <div className="modal__content">{props.children}</div>
     </div>,
     document.getElementById('modal-root')
   );
