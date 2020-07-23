@@ -43,6 +43,10 @@ app.use((error, req, res, next) => {
 });
 mongoose.connect("mongodb+srv://user:Vyio62CKbH67sFrr@cluster0.ekyqa.mongodb.net/messages")
     .then(result => {
-        app.listen(8000)
+        const server = app.listen(8000)
+        const io = require('./socket').init(server);      // Web sockets built over http
+        io.on('connection', socket => {
+            console.log('Client connected!')
+        });
     })
     .catch(err => console.log(err)); 
