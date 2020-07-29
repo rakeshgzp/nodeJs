@@ -1,0 +1,11 @@
+Generate Public/private Key for certifictates using openssl: 
+        openssl req -nodes -new -x509 -keyout server.key -out server.cert
+
+Some Fields to be filled:
+Country Name (2 letter code) [AU]:IN
+State or Province Name (full name) [Some-State]:Telangana            
+Locality Name (eg, city) []:Hyderabad 
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Rajesh Enterprises
+Organizational Unit Name (eg, section) []:FMCG
+Common Name (e.g. server FQDN or YOUR name) []:localhost
+Email Address []:rprakeshprasad00@gmail.com

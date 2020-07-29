@@ -1,0 +1,8 @@
+{
+    "env": {
+        "MONGO_USER": "user",
+        "MONGO_PASSWORD": "Vyio62CKbH67sFrr",
+        "MONGO_DATABASE": "messages",
+        "PORT": 8000
+    }
+}

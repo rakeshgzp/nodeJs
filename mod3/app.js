@@ -2,10 +2,14 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const feedRoutes = require('./routes/feed');
+const fs = require('fs');
 const authRoutes = require('./routes/auth');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const compression = require('compression');
 const {clearImage} = require('./util/file');
 var { graphqlHTTP } = require('express-graphql');
 const graphqlSchema = require('./graphql/schema');
@@ -28,6 +32,14 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 }
+
+const accessLogStream = fs.createWriteStream(
+    path.join(__dirname, 'access.log'),
+    { flags: 'a'}
+);
+app.use(helmet());
+app.use(compression());
+app.use(morgan('combined', {stream: accessLogStream}))
 app.use(bodyParser.json());
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'))
 app.use('/images', express.static(path.join(__dirname,'images')));
@@ -84,9 +96,9 @@ app.use((error, req, res, next) => {
     const data = error.data;
     res.status(status).json({message: message, data: data});
 });
-mongoose.connect("mongodb+srv://user:Vyio62CKbH67sFrr@cluster0.ekyqa.mongodb.net/messages")
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.ekyqa.mongodb.net/${process.env.MONGO_DATABASE}`)
     .then(result => {
-        const server = app.listen(8000)
+        const server = app.listen(process.env.PORT);
         const io = require('./socket').init(server);      // Web sockets built over http
         io.on('connection', socket => {
             console.log('Client connected!')
